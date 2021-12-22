@@ -1,0 +1,14 @@
+.spectacular {
+  color: blue;
+  font-size: 100px;
+
+  transform: translateX(100px) rotateX(360deg);
+}
+
+.main-title {
+  transition: all 0.1s ease;
+}
+
+.fade {
+  opacity: 0;
+}
