@@ -39,8 +39,7 @@ function addTodo(event) {
 function deleteCheck(event) {
   const item = event.target;
   //trash button
-
-  console.log(item.classList[0]);
+//  console.log(item.classList[0]);
   if (item.classList[0] === "trash-btn") {
     //find the todo element, then remove
     const todo = item.parentElement;
