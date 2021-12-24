@@ -46,6 +46,7 @@ function deleteCheck(event) {
     const todo = item.parentElement;
     //animation
     todo.classList.add("fall");
+    //remove after the animation
     todo.addEventListener("transitionend", function () {
       todo.remove();
     });
