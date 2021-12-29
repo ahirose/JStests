@@ -1,7 +1,7 @@
 //bind, call, apply
 
 const person = {
-  firstName: "Ed",
+  firstName: "Ed ",
   lastName: "Dev",
   getName() {
     console.log(this.firstName + this.lastName);
@@ -29,15 +29,15 @@ console.log(register);
 //we can't call it without bind
 function registerUser2(country, lang) {
   this.getName();
-  console.log(country + " " + lang);
+  console.log(this, country + " " + lang);
 }
+//it makes an error, it can't use it without any bind
+//registerUser2(); //TypeError, not a function
 
 //bind registerUser2 to person
-const registerBind = registerUser2.bind(person);
-registerBind("Japan", "jp");
+const personBind = registerUser2.bind(person);
+personBind("Japan", "jp");
 
-//can't use it without bind
-//registerUser2(); //TypeError, not a function
 //call
 registerUser2.call(person, "China", "cn");
 //apply

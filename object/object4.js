@@ -39,7 +39,7 @@ console.log(protTodo.getTodoName === protTodo2.getTodoName);
 
 const strA = new String("aaa");
 console.log(strA);
-console.log(typeof strA);
+console.log(typeof strA); //String Object
 const strB = "bbb";
 console.log(strB);
-console.log(typeof strB);
+console.log(typeof strB); //String
