@@ -101,3 +101,12 @@ select {
   margin-left: 1rem;
   border: none;
 }
+
+@keyframes playTrack {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.2);
+  }
+}
