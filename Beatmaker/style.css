@@ -102,6 +102,10 @@ select {
   border: none;
 }
 
+.mute.active {
+  background: black;
+}
+
 @keyframes playTrack {
   from {
     transform: scale(1);
