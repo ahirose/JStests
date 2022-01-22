@@ -4,6 +4,11 @@ const generateBtn = document.querySelector(".generate");
 const sliders = document.querySelectorAll("input[type='range']");
 const currentHexes = document.querySelectorAll(".color h2");
 const popup = document.querySelector(".copy-container");
+const adjustButton = document.querySelectorAll(".adjust");
+const lockButton = document.querySelectorAll(".lock");
+const closeAdjustments = document.querySelectorAll(".close-adjustment");
+const sliderContainers = document.querySelectorAll(".sliders");
+
 let initialColors;
 
 //Add our event listeners
@@ -28,7 +33,17 @@ popup.addEventListener("transitionend", () => {
   const popupBox = popup.children[0];
   popup.classList.remove("active");
   popupBox.classList.remove("active");
-  console.log("done");
+});
+
+adjustButton.forEach((button, index) => {
+  button.addEventListener("click", () => {
+    openAdjustmentPanel(index);
+  });
+});
+closeAdjustments.forEach((button, index) => {
+  button.addEventListener("click", () => {
+    closeAdjustmentPanel(index);
+  });
 });
 
 //functions
@@ -52,7 +67,6 @@ function randomColors() {
     const hexText = div.children[0];
     const randomColor = generateHex();
     //   Add the color to the bg
-    // console.log(chroma(randomColor).hex());
     initialColors.push(chroma(randomColor).hex());
 
     div.style.backgroundColor = randomColor;
@@ -70,6 +84,11 @@ function randomColors() {
 
   //reset inputs
   resetInputs();
+  //Check buttons contrast
+  adjustButton.forEach((button, index) => {
+    checkTextContrast(initialColors[index], button);
+    checkTextContrast(initialColors[index], lockButton[index]);
+  });
 }
 
 function checkTextContrast(color, text) {
@@ -123,8 +142,6 @@ function hslControls(e) {
   //   const bgColor = colorDivs[index].querySelector("h2").innerText;
   const bgColor = initialColors[index];
 
-  // console.log(bgColor);
-
   let color = chroma(bgColor)
     .set("hsl.s", saturation.value)
     .set("hsl.l", brightness.value)
@@ -141,7 +158,6 @@ function hslControls(e) {
 function updateTextUI(index) {
   const activeDiv = colorDivs[index];
   const color = chroma(activeDiv.style.backgroundColor);
-  //   console.log(color);
   const textHex = activeDiv.querySelector("h2");
   const icons = activeDiv.querySelectorAll(".controls button");
   textHex.innerText = color.hex();
@@ -165,7 +181,6 @@ function resetInputs() {
     if (slider.name === "brightness") {
       const brightColor = initialColors[slider.getAttribute("data-bright")];
       const brightValue = chroma(brightColor).hsl()[2];
-      console.log(Math.floor(brightValue * 100) / 100);
       slider.value = Math.floor(brightValue * 100) / 100;
     }
     if (slider.name === "saturation") {
@@ -188,5 +203,10 @@ function copyToClipboard(hex) {
   popup.classList.add("active");
   popupBox.classList.add("active");
 }
-
+function openAdjustmentPanel(index) {
+  sliderContainers[index].classList.toggle("active");
+}
+function closeAdjustmentPanel(index) {
+  sliderContainers[index].classList.remove("active");
+}
 randomColors();
