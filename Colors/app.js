@@ -13,6 +13,16 @@ let initialColors;
 //for local storage
 let savedPalettes = [];
 
+const cachedSliders = [];
+colorDivs.forEach((div, index) => {
+  const divSliders = div.querySelectorAll(".sliders input");
+  cachedSliders[index] = {
+    hue: divSliders[0],
+    brightness: divSliders[1],
+    saturation: divSliders[2]
+  };
+});
+
 //Add our event listeners=======================================================
 generateBtn.addEventListener("click", randomColors);
 
@@ -93,10 +103,7 @@ function randomColors() {
     checkTextContrast(randomColor, hexText);
     //   Initial colorize sliders
     const color = chroma(randomColor);
-    const sliders = div.querySelectorAll(".sliders input");
-    const hue = sliders[0];
-    const brightness = sliders[1];
-    const saturation = sliders[2];
+    const { hue, brightness, saturation } = cachedSliders[index];
     colorizeSliders(color, hue, brightness, saturation);
   });
   //reset inputs
@@ -150,11 +157,8 @@ function hslControls(e) {
     e.target.getAttribute("data-bright") ||
     e.target.getAttribute("data-sat") ||
     e.target.getAttribute("data-hue");
-  // let sliders
-  let sliders = e.target.parentElement.querySelectorAll("input[type='range']");
-  const hue = sliders[0];
-  const brightness = sliders[1];
-  const saturation = sliders[2];
+  
+  const { hue, brightness, saturation } = cachedSliders[index];
 
   //   const bgColor = colorDivs[index].querySelector("h2").innerText;
   const bgColor = initialColors[index];
@@ -188,23 +192,20 @@ function updateTextUI(index) {
 }
 
 function resetInputs() {
-  const sliders = document.querySelectorAll(".sliders input");
-  sliders.forEach((slider) => {
-    if (slider.name === "hue") {
-      const hueColor = initialColors[slider.getAttribute("data-hue")];
-      const hueValue = chroma(hueColor).hsl()[0];
-      slider.value = Math.floor(hueValue);
-    }
-    if (slider.name === "brightness") {
-      const brightColor = initialColors[slider.getAttribute("data-bright")];
-      const brightValue = chroma(brightColor).hsl()[2];
-      slider.value = Math.floor(brightValue * 100) / 100;
-    }
-    if (slider.name === "saturation") {
-      const satColor = initialColors[slider.getAttribute("data-sat")];
-      const satValue = chroma(satColor).hsl()[1];
-      slider.value = Math.floor(satValue * 100) / 100;
-    }
+  cachedSliders.forEach((sliderSet, index) => {
+    const { hue, brightness, saturation } = sliderSet;
+    
+    const hueColor = initialColors[index];
+    const hueValue = chroma(hueColor).hsl()[0];
+    hue.value = Math.floor(hueValue);
+    
+    const brightColor = initialColors[index];
+    const brightValue = chroma(brightColor).hsl()[2];
+    brightness.value = Math.floor(brightValue * 100) / 100;
+    
+    const satColor = initialColors[index];
+    const satValue = chroma(satColor).hsl()[1];
+    saturation.value = Math.floor(satValue * 100) / 100;
   });
 }
 
